@@ -4,8 +4,7 @@ import socket
 import threading
 
 #Defenir ip e porta do servidor
-#host = '192.168.229.85'
-host = '127.0.0.1'
+host = '192.168.229.85'
 port = 25888
 
 #Criar um socket para o servidor e coloca-lo à procura de conexões
