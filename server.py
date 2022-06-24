@@ -1,9 +1,11 @@
 #Importar librarias adicionais
+import datetime
 import socket
 import threading
 
 #Defenir ip e porta do servidor
-host = '192.168.229.85'
+#host = '192.168.229.85'
+host = '127.0.0.1'
 port = 25888
 
 #Criar um socket para o servidor e coloca-lo à procura de conexões
@@ -78,6 +80,7 @@ def mensagens(mensagem, cliente):
     index = clientes.index(cliente)
     nome_utilizador = nomes[index]
     nome_encontrado = False
+    data = datetime.datetime.now()
 
     if mensagem[0] == "/":
         if len(mensagem.split()) > 1:
@@ -92,6 +95,9 @@ def mensagens(mensagem, cliente):
                         dest_final = clientes[i]
                         dest_final.send(f"Privado de {nome_utilizador}: {msg[1]}".encode(FORMAT))
                         cliente.send(f"Privado enviado para {nome}: {msg[1]}".encode(FORMAT))
+                        historico_privado = open('historico_privado.txt', 'a')
+                        historico_privado.write(data.strftime("%d-%m-%Y %H:%M:%S") + f" De {nome_utilizador} para {nome}: {msg[1]} \n")
+                        historico_privado.close()
                         nome_encontrado = True
                 if nome_encontrado == False:
                     cliente.send(f"Utilizador não encontrado".encode(FORMAT))
@@ -104,6 +110,9 @@ def mensagens(mensagem, cliente):
                 cliente.send(f"Comando errado, tente novamente.".encode(FORMAT))
     else:
         transmitir(f"{nome_utilizador}: {mensagem}".encode(FORMAT))
+        historico_publico = open('historico_publico.txt', 'a')
+        historico_publico.write(data.strftime("%d-%m-%Y %H:%M:%S") + f" {nome_utilizador}: {mensagem} \n")
+        historico_publico.close()
 
 #Função para mostrar os comandos disponiveis e a sua função
 def msg_inicial(cliente, nome_utilizador):
