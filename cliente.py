@@ -8,7 +8,7 @@ BUFF = 4096
 
 #Iniciar o socket e conectar ao servidor através do ip e da porta
 cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-cliente.connect(('127.0.0.1', 25888))
+cliente.connect(('192.168.229.85', 25888))
 
 
 #Receber o nome do utilizador e enviar para o servidor
